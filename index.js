@@ -16,6 +16,10 @@ app.use(
         })
     )
     //test commit
+    //prueba segunod commit
+
+// Bayardo Guerrero - 2020
+
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express and Postgres API' })
 })

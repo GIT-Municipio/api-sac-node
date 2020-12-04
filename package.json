@@ -1,0 +1,23 @@
+{
+  "name": "node-api-postgres",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
+    "nodemon": "^2.0.4",
+    "oracledb": "^5.0.0",
+    "pg": "^7.18.2",
+    "request-ip": "^2.1.3",
+    "sequelize": "^5.21.12",
+    "soap-as-promised": "^1.26.0"
+  }
+}

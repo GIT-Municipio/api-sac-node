@@ -11,11 +11,11 @@ var cors = require('cors')
 app.use(cors())
 app.use(bodyParser.json())
 app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
-)
-
+        bodyParser.urlencoded({
+            extended: true,
+        })
+    )
+    //test commit
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express and Postgres API' })
 })

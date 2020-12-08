@@ -2,7 +2,7 @@ const utilService = require('../../services/utilService')
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'postgres', //db user
-    host: '172.16.7.23', //db host etc: 127.0.0.1
+    host: '172.16.3.35', //db host etc: 127.0.0.1
     database: 'bdd_core_municipalidad', //db name
     password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql

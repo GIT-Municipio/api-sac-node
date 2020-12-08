@@ -2,7 +2,7 @@ const utilService = require('../../services/utilService')
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'postgres', //db user
-    host: '172.16.7.23', //db host etc: 127.0.0.1
+    host: '172.16.3.35', //db host etc: 127.0.0.1
     database: 'bdd_core_municipalidad', //db name
     password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql
@@ -20,9 +20,10 @@ async function insertPagos(servicio, usuario, fechaTransaccion, valorTotal, iva,
     psm_campo2, psm_campo3, psm_campo4, psm_campo5)
     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15);`
     const insert = await pool.query(query, [servicio, usuario, fechaTransaccion, valorTotal, iva,
-        valorIva, observacion, 'INGRESADO', usuarioCreacion, now, nombresContribuyente,
-        emailContribuyente, impuestoContribuyente, referencia, rutaArchivo])
-    // const format = utilService.formatAtribuciones(atribuciones.rows)
+            valorIva, observacion, 'INGRESADO', usuarioCreacion, now, nombresContribuyente,
+            emailContribuyente, impuestoContribuyente, referencia, rutaArchivo
+        ])
+        // const format = utilService.formatAtribuciones(atribuciones.rows)
     return (insert)
 }
 

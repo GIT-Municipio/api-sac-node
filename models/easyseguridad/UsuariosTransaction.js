@@ -36,8 +36,10 @@ async function login(usuario, password, app) {
             console.log('ing' + usuario)
             const token = tokenService.generarToken(usuario)
             const permisos = await AtribucionesTransaction.getAtribuciones(usuario, app)
+            const aplicacion = await AtribucionesTransaction.getApp(app)
             return {
                 mensaje: 'OK',
+                aplicacion: aplicacion,
                 token: token,
                 cedula: usuario_obj.usm_cedula,
                 usuario: usuario_obj.usm_nombres + ' ' + usuario_obj.usm_apellidos,

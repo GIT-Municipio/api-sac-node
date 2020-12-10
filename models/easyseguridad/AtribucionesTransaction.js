@@ -49,10 +49,16 @@ async function getUsuario(cedula) {
         // const format = utilService.formatAtribuciones(atribuciones.rows)
     return usuario.rows[0]
 }
-
+async function getApp(app) {
+    const query = `SELECT * FROM corp.tbl_aplicaciones_municipalidad
+    WHERE apm_codigo = $1`
+    const usuario = await pool.query(query, [app])
+    return usuario.rows[0]
+}
 module.exports = {
     getAllVehicleDisplay,
     getVehicleDisplayById,
     getAtribuciones,
-    getUsuario
+    getUsuario,
+    getApp
 }

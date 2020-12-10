@@ -39,7 +39,7 @@ async function login(usuario, password, app) {
             const aplicacion = await AtribucionesTransaction.getApp(app)
             return {
                 mensaje: 'OK',
-                aplicacion: aplicacion,
+                aplicacion: aplicacion.apm_nombre_aplicacion,
                 token: token,
                 cedula: usuario_obj.usm_cedula,
                 usuario: usuario_obj.usm_nombres + ' ' + usuario_obj.usm_apellidos,

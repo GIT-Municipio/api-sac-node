@@ -6,6 +6,7 @@ const db = require('./queries')
 const inicio = require('./controller/loginController')
 const pagos = require('./controller/pagosController')
 const tramites = require('./controller/tramitesController')
+const biblioteca = require('./controller/bibliotecaController')
 var cors = require('cors')
 
 app.use(cors())
@@ -38,6 +39,8 @@ app.post('/tramites/getRequisitosByTramiteId', tramites.getRequisitosByTramiteId
 app.post('/tramites/getRecorridoTramiteByTramite', tramites.getRecorridoTramiteByTramite)
 app.post('/tramites/getTramitesByTramiteId', tramites.getTramitesByTramiteId)
 app.post('/tramites/getDocumentoById', tramites.getDocumentoById)
+
+app.post('/biblioteca/insertRecurso', biblioteca.insertRecurso)
 
 app.get("/pagos/getFile", (req, res) => {
     let file = req.query.nombre;

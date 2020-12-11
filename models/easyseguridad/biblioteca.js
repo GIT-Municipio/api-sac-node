@@ -69,7 +69,7 @@ async function getAllRecursosByEstado(estado) {
     rec_pais_editorial,rec_informacion_descriptiva, 
     rec_impresion_documento, rec_idioma, rec_resumen,
     rec_estado_obra, rec_numero_ejemplares,  
-    rec_fecha_registro,  rec_observaciones, rec_estado, 
+    rec_fecha_registro,  rec_observaciones, rec_estado
     FROM biblioteca.tbl_recursos
     WHERE rec_estado = $1 
     ORDER BY rec_mfn;`

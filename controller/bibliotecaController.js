@@ -3,6 +3,7 @@ const bibliotecaTransaccion = require('../models/easyseguridad/biblioteca')
 async function insertRecurso(req, res) {
 
     const rec_planilla = req.body.rec_planilla
+    const rec_nombre_archivo = req.body.rec_nombre_archivo
     const rec_ubicacion_fisica = req.body.rec_ubicacion_fisica
     const rec_nivel_bibliografico = req.body.rec_nivel_bibliografico
     const rec_nivel_registro = req.body.rec_nivel_registro
@@ -38,7 +39,7 @@ async function insertRecurso(req, res) {
     //     res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: usuario, password, codigoApp.' })
     //   }
     try {
-        const respuesta = await bibliotecaTransaccion.insertRecurso(rec_planilla, rec_ubicacion_fisica, rec_nivel_bibliografico, rec_nivel_registro,
+        const respuesta = await bibliotecaTransaccion.insertRecurso(rec_planilla, rec_nombre_archivo, rec_ubicacion_fisica, rec_nivel_bibliografico, rec_nivel_registro,
             rec_autor_personal, rec_titulo, rec_paginas, rec_editorial, rec_ciudad_editorial,
             rec_pais_editorial, rec_edicion, rec_informacion_descriptiva, rec_fecha_publicacion,
             rec_fecha_iso, rec_isbn, rec_impresion_documento, rec_idioma, rec_resumen, rec_numero_referencias,

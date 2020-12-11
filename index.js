@@ -25,9 +25,6 @@ app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express and Postgres API' })
 })
 
-// app.get('/vehicles',db.getAllVehicleDisplay)
-// app.get('/vehicle/:id',db.getVehicleDisplayById)
-// app.post('/login',db.getAtribuciones)
 app.post('/login', inicio.login)
 app.post('/pagos/insertPago', pagos.insertRegistro)
 app.post('/pagos/getAllPagosByEstado', pagos.getAllPagosByEstado)
@@ -41,6 +38,8 @@ app.post('/tramites/getTramitesByTramiteId', tramites.getTramitesByTramiteId)
 app.post('/tramites/getDocumentoById', tramites.getDocumentoById)
 
 app.post('/biblioteca/insertRecurso', biblioteca.insertRecurso)
+app.post('/biblioteca/getAllRecursosByEstado', biblioteca.getAllRecursosByEstado)
+app.post('/biblioteca/getRecursoById', biblioteca.getRecursoById)
 
 app.get("/pagos/getFile", (req, res) => {
     let file = req.query.nombre;

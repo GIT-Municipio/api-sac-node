@@ -86,19 +86,21 @@ async function getAllPrestamosByEstado(estado) {
     query = '';
     recursos = '';
     if (estado == null || estado == '') {
-        query = `SELECT pre_id, rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+        query = `SELECT pre_id, rec.rec_mfn, rec.rec_titulo, rec.rec_autor_personal,pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
         pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
         pre_campo_2, pre_campo_3, pre_campo_4
-        FROM biblioteca.tbl_prestamos
-        ORDER BY pre_id desc;`
+        FROM biblioteca.tbl_prestamos pre
+        INNER JOIN biblioteca.tbl_recursos rec ON pre.rec_mfn = rec.rec_mfn
+        ORDER BY pre.pre_id desc;`
         recursos = await pool.query(query, [])
     } else {
-        query = `SELECT pre_id, rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+        query = `SELECT pre_id, rec.rec_mfn, rec.rec_titulo, rec.rec_autor_personal,pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
         pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
         pre_campo_2, pre_campo_3, pre_campo_4
-        FROM biblioteca.tbl_prestamos
+        FROM biblioteca.tbl_prestamos pre
+        INNER JOIN biblioteca.tbl_recursos rec ON pre.rec_mfn = rec.rec_mfn
         WHERE pre_estado = $1
-        ORDER BY pre_id desc;`
+        ORDER BY pre.pre_id desc;`
         recursos = await pool.query(query, [estado])
     }
     return (recursos.rows)

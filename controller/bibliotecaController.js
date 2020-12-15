@@ -1,4 +1,5 @@
 const bibliotecaTransaccion = require('../models/easyseguridad/biblioteca')
+const biblioteca = require('../models/easyseguridad/biblioteca')
 
 async function insertRecurso(req, res) {
 
@@ -74,8 +75,67 @@ async function getRecursoById(req, res) {
         res.status(500).send({ mensaje: err.message })
     }
 }
+
+async function insertPrestamo(req, res) {
+    const rec_mfn = req.body.rec_mfn
+    const pre_cedula = req.body.pre_cedula
+    const pre_nombres = req.body.pre_nombres
+    const pre_apellidos = req.body.pre_apellidos
+    const pre_institucion = req.body.pre_institucion
+    const pre_nivel = req.body.pre_nivel
+    const pre_fecha_prestamo = req.body.pre_fecha_prestamo
+    const pre_fecha_entrega = req.body.pre_fecha_entrega
+    const pre_observaciones = req.body.pre_observaciones
+    const pre_estado = req.body.pre_estado
+    const pre_campo_1 = req.body.pre_campo_1
+    const pre_campo_2 = req.body.pre_campo_2
+    const pre_campo_3 = req.body.pre_campo_3
+    const pre_campo_4 = req.body.pre_campo_4
+        //   if (nombrecorto === undefined || password === undefined || codigoApp === undefined) {
+        //     res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: usuario, password, codigoApp.' })
+        //   }
+    try {
+        const respuesta = await bibliotecaTransaccion.insertPrestamo(rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+            pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
+            pre_campo_2, pre_campo_3, pre_campo_4)
+        res.status(200).send({ mensaje: 'OK' })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
+async function getAllPrestamosByEstado(req, res) {
+    const estado = req.body.pre_estado
+    try {
+        const respuesta = await biblioteca.getAllPrestamosByEstado(estado)
+        res.status(200).send(respuesta)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
+
+async function updatePrestamo(req, res) {
+    const pre_id = req.body.pre_id
+    const estado = req.body.pre_estado
+    const fecha_entrega = new Date();
+    const observaciones = req.body.pre_campo_3
+    if (pre_id === undefined || estado === undefined) {
+        res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: id, estado.' })
+    }
+    try {
+        const respuesta = await biblioteca.updatePrestamo(pre_id, estado, fecha_entrega, observaciones)
+        res.status(200).send({ mensaje: 'OK' })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
 module.exports = {
     insertRecurso,
     getAllRecursosByEstado,
-    getRecursoById
+    getRecursoById,
+    insertPrestamo,
+    getAllPrestamosByEstado,
+    updatePrestamo
 }

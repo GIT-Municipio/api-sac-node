@@ -40,6 +40,9 @@ app.post('/tramites/getDocumentoById', tramites.getDocumentoById)
 app.post('/biblioteca/insertRecurso', biblioteca.insertRecurso)
 app.post('/biblioteca/getAllRecursosByEstado', biblioteca.getAllRecursosByEstado)
 app.post('/biblioteca/getRecursoById', biblioteca.getRecursoById)
+app.post('/biblioteca/insertPrestamo', biblioteca.insertPrestamo)
+app.post('/biblioteca/getAllPrestamosByEstado', biblioteca.getAllPrestamosByEstado)
+app.post('/biblioteca/updatePrestamo', biblioteca.updatePrestamo)
 
 app.get("/pagos/getFile", (req, res) => {
     let file = req.query.nombre;

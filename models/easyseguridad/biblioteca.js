@@ -7,6 +7,7 @@ const pool = new Pool({
     password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql
 })
+
 async function insertRecurso(rec_planilla, rec_nombre_archivo, rec_ubicacion_fisica, rec_nivel_bibliografico, rec_nivel_registro,
     rec_autor_personal, rec_titulo, rec_paginas, rec_editorial, rec_ciudad_editorial,
     rec_pais_editorial, rec_edicion, rec_informacion_descriptiva, rec_fecha_publicacion,
@@ -36,31 +37,6 @@ async function insertRecurso(rec_planilla, rec_nombre_archivo, rec_ubicacion_fis
         ])
         // const format = utilService.formatAtribuciones(atribuciones.rows)
     return (insert)
-}
-const getVehicleDisplayById = (request, response) => {
-    const id = parseInt(request.params.id)
-
-    pool.query('select * from vehicles where vehicle_id = $1', [id], (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(200).json(results.rows)
-    })
-}
-
-async function getAtribuciones(usuario, aplicacion) {
-    const query = `SELECT app.apm_nombre_aplicacion, mo.mom_codigo as modulo, mo.mom_nombre_modulo,mo.mom_descripcion, mo.mom_link,
-    tra.trm_transaccion as transaccion, tra.trm_nombre, tra.trm_descripcion, tra.trm_link
-    FROM corp.tbl_aplicaciones_municipalidad  app
-    INNER JOIN corp.tbl_modulos_municipalidad mo ON app.apm_codigo = mo.apm_codigo
-    INNER JOIN corp.tbl_transacciones_municipalidad tra ON tra.mom_id_modulo = mo.mom_id_modulo
-    INNER JOIN corp.tbl_atribuciones_municipalidad atr ON atr.trm_id = tra.trm_id
-    WHERE atr.atm_usuario = $1 AND app.apm_estado = 'ACTIVO' AND mo.mom_estado = 'ACTIVO'
-    AND tra.trm_estado = 'ACTIVO' AND atr.atm_estado = 'ACTIVO'
-    AND app.apm_codigo = $2 ORDER BY mo.mom_nombre_modulo ASC;`
-    const atribuciones = await pool.query(query, [usuario, aplicacion])
-    const format = utilService.formatAtribuciones(atribuciones.rows)
-    return format
 }
 
 async function getAllRecursosByEstado(estado) {
@@ -92,8 +68,54 @@ async function getRecursoById(id) {
     return (recursos.rows)
 }
 
+async function insertPrestamo(rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+    pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
+    pre_campo_2, pre_campo_3, pre_campo_4) {
+    let now = new Date();
+    const query = `INSERT INTO biblioteca.tbl_prestamos(
+        pre_id, rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion, pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1, pre_campo_2, pre_campo_3, pre_campo_4)
+        VALUES (default,
+             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);`
+    const insert = await pool.query(query, [rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+        pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
+        pre_campo_2, pre_campo_3, pre_campo_4
+    ])
+    return (insert)
+}
+async function getAllPrestamosByEstado(estado) {
+    query = '';
+    recursos = '';
+    if (estado == null || estado == '') {
+        query = `SELECT pre_id, rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+        pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
+        pre_campo_2, pre_campo_3, pre_campo_4
+        FROM biblioteca.tbl_prestamos
+        ORDER BY pre_id desc;`
+        recursos = await pool.query(query, [])
+    } else {
+        query = `SELECT pre_id, rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+        pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
+        pre_campo_2, pre_campo_3, pre_campo_4
+        FROM biblioteca.tbl_prestamos
+        WHERE pre_estado = $1
+        ORDER BY pre_id desc;`
+        recursos = await pool.query(query, [estado])
+    }
+    return (recursos.rows)
+}
+
+async function updatePrestamo(id, estado, fecha_entrega, observaciones) {
+    const query = `UPDATE biblioteca.tbl_prestamos SET pre_estado = $2 , 
+    pre_fecha_entrega = $3 , pre_campo_3 = $4  
+    WHERE pre_id = $1;`
+    const prestamo = await pool.query(query, [id, estado, fecha_entrega, observaciones])
+    return (prestamo)
+}
 module.exports = {
     insertRecurso,
     getAllRecursosByEstado,
-    getRecursoById
+    getRecursoById,
+    insertPrestamo,
+    getAllPrestamosByEstado,
+    updatePrestamo
 }

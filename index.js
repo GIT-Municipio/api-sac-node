@@ -6,6 +6,7 @@ const db = require('./queries')
 const inicio = require('./controller/loginController')
 const pagos = require('./controller/pagosController')
 const tramites = require('./controller/tramitesController')
+const biblioteca = require('./controller/bibliotecaController')
 var cors = require('cors')
 
 app.use(cors())
@@ -24,9 +25,6 @@ app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express and Postgres API' })
 })
 
-// app.get('/vehicles',db.getAllVehicleDisplay)
-// app.get('/vehicle/:id',db.getVehicleDisplayById)
-// app.post('/login',db.getAtribuciones)
 app.post('/login', inicio.login)
 app.post('/pagos/insertPago', pagos.insertRegistro)
 app.post('/pagos/getAllPagosByEstado', pagos.getAllPagosByEstado)
@@ -38,6 +36,13 @@ app.post('/tramites/getRequisitosByTramiteId', tramites.getRequisitosByTramiteId
 app.post('/tramites/getRecorridoTramiteByTramite', tramites.getRecorridoTramiteByTramite)
 app.post('/tramites/getTramitesByTramiteId', tramites.getTramitesByTramiteId)
 app.post('/tramites/getDocumentoById', tramites.getDocumentoById)
+
+app.post('/biblioteca/insertRecurso', biblioteca.insertRecurso)
+app.post('/biblioteca/getAllRecursosByEstado', biblioteca.getAllRecursosByEstado)
+app.post('/biblioteca/getRecursoById', biblioteca.getRecursoById)
+app.post('/biblioteca/insertPrestamo', biblioteca.insertPrestamo)
+app.post('/biblioteca/getAllPrestamosByEstado', biblioteca.getAllPrestamosByEstado)
+app.post('/biblioteca/updatePrestamo', biblioteca.updatePrestamo)
 
 app.get("/pagos/getFile", (req, res) => {
     let file = req.query.nombre;

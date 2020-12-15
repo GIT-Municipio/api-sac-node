@@ -1,8 +1,10 @@
 const bibliotecaTransaccion = require('../models/easyseguridad/biblioteca')
+const biblioteca = require('../models/easyseguridad/biblioteca')
 
 async function insertRecurso(req, res) {
 
     const rec_planilla = req.body.rec_planilla
+    const rec_nombre_archivo = req.body.rec_nombre_archivo
     const rec_ubicacion_fisica = req.body.rec_ubicacion_fisica
     const rec_nivel_bibliografico = req.body.rec_nivel_bibliografico
     const rec_nivel_registro = req.body.rec_nivel_registro
@@ -38,7 +40,7 @@ async function insertRecurso(req, res) {
     //     res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: usuario, password, codigoApp.' })
     //   }
     try {
-        const respuesta = await bibliotecaTransaccion.insertRecurso(rec_planilla, rec_ubicacion_fisica, rec_nivel_bibliografico, rec_nivel_registro,
+        const respuesta = await bibliotecaTransaccion.insertRecurso(rec_planilla, rec_nombre_archivo, rec_ubicacion_fisica, rec_nivel_bibliografico, rec_nivel_registro,
             rec_autor_personal, rec_titulo, rec_paginas, rec_editorial, rec_ciudad_editorial,
             rec_pais_editorial, rec_edicion, rec_informacion_descriptiva, rec_fecha_publicacion,
             rec_fecha_iso, rec_isbn, rec_impresion_documento, rec_idioma, rec_resumen, rec_numero_referencias,
@@ -52,76 +54,88 @@ async function insertRecurso(req, res) {
     }
 }
 
-// async function getAllPagosByEstado(req, res) {
-//     const servicio = req.body.estado
+async function getAllRecursosByEstado(req, res) {
+    const estado = req.body.estado
+    try {
+        const respuesta = await bibliotecaTransaccion.getAllRecursosByEstado(estado)
+        res.status(200).send(respuesta)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
 
-//     //   if (nombrecorto === undefined || password === undefined || codigoApp === undefined) {
-//     //     res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: usuario, password, codigoApp.' })
-//     //   }
-//     try {
-//         const respuesta = await pagoTransaction.getAllPagosByEstado(servicio)
-//         res.status(200).send(respuesta)
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).send({ mensaje: err.message })
-//     }
-// }
+async function getRecursoById(req, res) {
+    const id = req.body.id
+    try {
+        const respuesta = await bibliotecaTransaccion.getRecursoById(id)
+        res.status(200).send(respuesta)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
 
-// async function updateRegistro(req, res) {
-//     const id = req.body.id
-//     const estado = req.body.estado
-//     const usuario = req.body.usuario
-//     const fecha = req.body.fecha
-//     const observacion = req.body.observacion
-//     if (id === undefined || estado === undefined || usuario === undefined) {
-//         res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: id, usuario, estado.' })
-//     }
-//     try {
-//         const respuesta = await pagoTransaction.updatePagos(id, estado, usuario, fecha, observacion)
+async function insertPrestamo(req, res) {
+    const rec_mfn = req.body.rec_mfn
+    const pre_cedula = req.body.pre_cedula
+    const pre_nombres = req.body.pre_nombres
+    const pre_apellidos = req.body.pre_apellidos
+    const pre_institucion = req.body.pre_institucion
+    const pre_nivel = req.body.pre_nivel
+    const pre_fecha_prestamo = req.body.pre_fecha_prestamo
+    const pre_fecha_entrega = req.body.pre_fecha_entrega
+    const pre_observaciones = req.body.pre_observaciones
+    const pre_estado = req.body.pre_estado
+    const pre_campo_1 = req.body.pre_campo_1
+    const pre_campo_2 = req.body.pre_campo_2
+    const pre_campo_3 = req.body.pre_campo_3
+    const pre_campo_4 = req.body.pre_campo_4
+        //   if (nombrecorto === undefined || password === undefined || codigoApp === undefined) {
+        //     res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: usuario, password, codigoApp.' })
+        //   }
+    try {
+        const respuesta = await bibliotecaTransaccion.insertPrestamo(rec_mfn, pre_cedula, pre_nombres, pre_apellidos, pre_institucion,
+            pre_nivel, pre_fecha_prestamo, pre_fecha_entrega, pre_observaciones, pre_estado, pre_campo_1,
+            pre_campo_2, pre_campo_3, pre_campo_4)
+        res.status(200).send({ mensaje: 'OK' })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
+async function getAllPrestamosByEstado(req, res) {
+    const estado = req.body.pre_estado
+    try {
+        const respuesta = await biblioteca.getAllPrestamosByEstado(estado)
+        res.status(200).send(respuesta)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
 
-//         res.status(200).send({ mensaje: 'OK' })
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).send({ mensaje: err.message })
-//     }
-// }
-
-
-// async function saveFile(req, res) {
-//     const url = req.body.link
-//         // const local = "c:\\registros"
-//         // return saveImageToDisk(url, local)
-//     console.log(url)
-//     let image_path = 'C://registros//' + req.body.nombre;
-
-//     try {
-//         await saveImageToDisk(req.body.link, image_path);
-//         res.status(200).send({ mensaje: 'OK' })
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).send({ mensaje: err.message })
-//     }
-// }
-
-
-// var fs = require('fs');
-// var https = require('https');
-// //Node.js Function to save image from External URL.
-// function saveImageToDisk(url, localPath) {
-//     console.log('ing 1')
-//     var fullUrl = url;
-//     var file = fs.createWriteStream(localPath);
-//     console.log('ing 2')
-//     var request = https.get(url, function(response) {
-//         response.pipe(file);
-//     });
-//     console.log('ing 3')
-// }
-// exports.saveImage(req, res) {
-
-
-//     }
-
+async function updatePrestamo(req, res) {
+    const pre_id = req.body.pre_id
+    const estado = req.body.pre_estado
+    const fecha_entrega = new Date();
+    const observaciones = req.body.pre_campo_3
+    if (pre_id === undefined || estado === undefined) {
+        res.status(200).send({ mensaje: 'Por favor envíe los parametros requeridos: id, estado.' })
+    }
+    try {
+        const respuesta = await biblioteca.updatePrestamo(pre_id, estado, fecha_entrega, observaciones)
+        res.status(200).send({ mensaje: 'OK' })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message })
+    }
+}
 module.exports = {
-    insertRecurso
+    insertRecurso,
+    getAllRecursosByEstado,
+    getRecursoById,
+    insertPrestamo,
+    getAllPrestamosByEstado,
+    updatePrestamo
 }

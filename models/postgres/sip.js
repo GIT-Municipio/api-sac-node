@@ -8,7 +8,6 @@ const pool = new Pool({
     port: 5432 // db port etc: 5432 for postgresql
 })
 
-
 async function getTramitesById(id) {
     const query = `SELECT id, nombre_tramite as detalle  FROM vista_plantillas_xclasifproc_externos WHERE id = $1`
     const tramites = await pool.query(query, [id])

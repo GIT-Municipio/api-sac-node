@@ -66,11 +66,34 @@ async function getDocumentoById(req, res) {
     }
 }
 
+async function getPuntoInformacionAll(req, res){
+    try {
+        const respuesta = await tramiteTransaccion.getPuntoInformacionAll()
+        res.status(200).send(respuesta)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({mensaje: err.message})
+    }
+}
+
+async function getTramiteByNombre(req, res){
+    const nombre = req.body.nombre
+    try {
+        const respuesta = await tramiteTransaccion.getTramiteByNombre(nombre)
+        res.status(200).send(respuesta)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ mensaje: err.message})
+    }
+}
+
 module.exports = {
     getTramitesById,
     getTramitesAll,
     getRequisitosByTramiteId,
     getRecorridoTramiteByTramite,
     getTramitesByTramiteId,
-    getDocumentoById
+    getDocumentoById,
+    getPuntoInformacionAll,
+    getTramiteByNombre
 }

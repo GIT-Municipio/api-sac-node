@@ -78,11 +78,48 @@ async function getDocumentoById(codigo) {
     return (tramites.rows)
 }
 
+async function getPuntoInformacionAll(){
+    const query = `SELECT plan.id,
+    plan.nombre_plantilla,
+    plan.nombre_tramite,
+    proc.ref_clasifproceso,
+    clas.parent_id,
+	clas.nombre_clasif_proceso,
+	clas_proc.nombre_clasif_proceso
+    FROM tbli_esq_plantilla plan
+   	inner join tble_proc_proceso proc on  plan.refer_procesoid = proc.id and proc.tipo_informacion::text = 'PROCESO'::text AND proc.ref_tipoinf = 1
+	inner join tble_proc_clasificacion_proceso clas on proc.ref_clasifproceso = clas.id	
+    inner join tble_proc_clasificacion_proceso clas_proc on clas.parent_id = clas_proc.id
+    order by clas.parent_id`
+    const tramites = await pool.query(query)
+    return (tramites.rows)
+}
+
+async function getTramitesByNombre(nombre) {
+    const query = `SELECT plan.id,
+    plan.nombre_plantilla,
+    plan.nombre_tramite,
+    proc.ref_clasifproceso,
+    clas.parent_id,
+    clas.nombre_clasif_proceso,
+    clas_proc.nombre_clasif_proceso
+    FROM tbli_esq_plantilla plan
+        inner join tble_proc_proceso proc on  plan.refer_procesoid = proc.id and proc.tipo_informacion::text = 'PROCESO'::text AND proc.ref_tipoinf = 1
+    inner join tble_proc_clasificacion_proceso clas on proc.ref_clasifproceso = clas.id	
+    inner join tble_proc_clasificacion_proceso clas_proc on clas.parent_id = clas_proc.id
+    WHERE plan.nombre_tramite LIKE $1 
+    order by clas.parent_id`
+    const tramites = await pool.query(query,[nombre])
+    return (tramites.rows)
+}
+
 module.exports = {
     getTramitesById,
     getTramitesAll,
     getRequisitosByTramiteId,
     getRecorridoTramiteByTramite,
     getTramitesByTramiteId,
-    getDocumentoById
+    getDocumentoById, 
+    getPuntoInformacionAll,
+    getTramitesByNombre
 }

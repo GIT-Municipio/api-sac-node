@@ -7,6 +7,7 @@ const inicio = require('./controller/loginController')
 const pagos = require('./controller/pagosController')
 const tramites = require('./controller/tramitesController')
 const biblioteca = require('./controller/bibliotecaController')
+const fielWeb = require('./controller/fielWebController')
 var cors = require('cors')
 
 app.use(cors())
@@ -43,6 +44,8 @@ app.post('/biblioteca/getRecursoById', biblioteca.getRecursoById)
 app.post('/biblioteca/insertPrestamo', biblioteca.insertPrestamo)
 app.post('/biblioteca/getAllPrestamosByEstado', biblioteca.getAllPrestamosByEstado)
 app.post('/biblioteca/updatePrestamo', biblioteca.updatePrestamo)
+
+app.post('/fielweb/obtenerUrl', fielWeb.consumirWSFW)
 
 app.get("/pagos/getFile", (req, res) => {
     let file = req.query.nombre;

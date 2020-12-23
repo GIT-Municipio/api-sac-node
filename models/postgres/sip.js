@@ -22,7 +22,8 @@ async function getTramitesAll() {
 }
 
 async function getRequisitosByTramiteId(id) {
-    const query = `select * from  vista_presentaplantilla where id = $1 ;`
+    const query = `select id,codigo_requis,descripcion_requisito from  tblh_cr_catalogo_requisitos where  ref_proceso =
+    (select distinct refer_procesoid from  vista_presentaplantilla where id = $1 );`
     const tramites = await pool.query(query, [id])
     return (tramites.rows)
 }

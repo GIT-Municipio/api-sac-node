@@ -1,27 +1,34 @@
 const nodemailer = require('nodemailer');
 
-let transpotador = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'rchistoso@gmail.com',
-        pass: 'rikigamer'
-    }
-});
-
-let Opciones_mailer = {
-    from: 'rchistoso@gmail.com',
-    to: 'toledoc509@gmail.com',
-    subject: 'Pruebas de envio de email',
-    text: 'HOLA MUNDOOOOOOOO'
-};
-
-transpotador.sendMail(Opciones_mailer, function(err, data)
+function Enviar_Emial(emitente, remitente, asunto, cuerpo)
 {
-    if(err)
+    let transpotador = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'rchistoso@gmail.com',
+            pass: 'rikigamer'
+        }
+    });
+
+    let Opciones_mailer = {
+        from: emitente,
+        to: remitente,
+        subject: asunto,
+        html: cuerpo
+    };
+
+    transpotador.sendMail(Opciones_mailer, function(err, data)
     {
-        console.log('Ha ocurrido un error');
-    }else
-    {
-        console.log('!!!!!!Email enviado!!!!!!')
-    }
-});
+        if(err)
+        {
+            console.log('NO SE PUDO ENVIAR EL EMAIL', err);
+        }else
+        {
+            console.log('!!!!!!EMAIL ENVIADO!!!!!!')
+        }
+    });
+}
+
+module.exports={
+    Enviar_Emial
+}

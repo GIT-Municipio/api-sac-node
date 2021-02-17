@@ -4,12 +4,10 @@ const send_email = require('../services/mensajeriaService')
 const tokenService = require('../services/tokenService')
 const carpetas = require('../services/documentosService')
 const documentos = require('../models/usuarios/modelo_carpetas_usuarios')
-const carpeta_ciudadano = require('../models/usuarios/modelo_carpetas_usuarios')
 
 //variables para pasar datos del ciudadano
 var usua_usuario_nombres;
 var usua_usuario_appeliidos;
-var usua_usuario_cedula;
 
 //numero comprobador de dos pasos
 var num_comprobador;
@@ -55,9 +53,9 @@ async function login_ciudadano(req, res)
           await usuarios_nuevos.Insertar_CodigoValidador(cedula, num_comprobador)
 
           //envio de numero comprobador a email
-          const email_emitente = 'rchistoso@gmail.com'
+          const email_emitente = 'municotacachi@gmail.com'
           const asunto = 'Municipio de Cotacachi - Código de seguridad'
-          const cuerpo = "Sistema automatico de dos pasos de Cotacachi"+
+          const cuerpo = "Sistema automatico de verficiacion en dos pasos de Cotacachi"+
                          "<br><br> <img style='left: 40%;' src='http://www.cotacachienlinea.gob.ec/sip_gd/imgs/logos/mail.png' width='200' /> <br><br>"+
                          "<h2>Su codigo de verificación es "+num_comprobador+"</h2>";
 
@@ -66,7 +64,6 @@ async function login_ciudadano(req, res)
           //asignacion de datos a las variables
           usua_usuario_nombres = respuesta.usm_nombres
           usua_usuario_appeliidos = respuesta.usm_apellidos
-          usua_usuario_cedula = respuesta.usm_cedula
 
           res.status(200).send({mensaje:"OK-paso1", ciu_cedula: respuesta.usm_cedula})
         }else
@@ -98,7 +95,9 @@ async function login_ciudadano_paso_dos(req, res)
       //VERIFICAMOS SI EL CODIGO INGRESADO ES EL CORRECTO
       if(codigoVerificador.codlog_codigo_gen == codigo)
       {
-        const ruta_carpeta = await carpeta_ciudadano.obtener_carpeta_principal_BYCedulaCiu(identificacion)
+        //DIRECCION DE CARPETA PERSONAL
+        //const ruta_carpeta = await documentos.obtener_carpeta_principal_BYCedulaCiu(identificacion)
+
         const token = tokenService.generarToken(usua_usuario_nombres)
         const transacciones = await usuarios_nuevos.ObtenerTransacciones('PCW');
   
@@ -108,7 +107,7 @@ async function login_ciudadano_paso_dos(req, res)
                               usuario_nombres: usua_usuario_nombres,
                               usuario_appeliidos: usua_usuario_appeliidos, 
                               usuario_cedula: identificacion,
-                              ruta_carpeta: ruta_carpeta.pfc_ruta_folderpricipal,
+                              //ruta_carpeta: ruta_carpeta.pfc_ruta_folderpricipal,
                             })
       }else
       {
@@ -133,7 +132,7 @@ async function insertNuevoUsuario(req, res)
     const email = req.body.email
 
     //parametros del enviador de emails
-    const email_emitente = 'rchistoso@gmail.com'
+    const email_emitente = 'municotacachi@gmail.com'
     const asunto = 'Activacion de usuario nuevo registrado'
     const cuerpo = "Gracias por registrarse en los servicios web del Gad Municipal de Santa Ana de Cotacachi, para continuar con el registro por favor haga click en el siguiente enlace:"+
                   "<br><br> <img style='left: 40%;' src='http://www.cotacachienlinea.gob.ec/sip_gd/imgs/logos/mail.png' width='200' /> <br><br>"+
@@ -144,8 +143,8 @@ async function insertNuevoUsuario(req, res)
         await send_email.Enviar_Emial(email_emitente, email, asunto, cuerpo)
 
         //creación de carpeta personal del usuario registrado
-        var ruta = carpetas.crearCarpetaUsuario(cedula)
-        documentos.insertar_nuevo_carpeta_principal(cedula, ruta)
+        //var ruta = carpetas.crearCarpetaUsuario(cedula)
+        //documentos.insertar_nuevo_carpeta_principal(cedula, ruta)
 
         res.status(200).send({mensaje:'OK-nuevo-usuario',estado:'USUARIO REGISTRADO CORRECTAMENTE'})
     } catch (error) 

@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config()
 
 function Enviar_Emial(emitente, remitente, asunto, cuerpo)
 {
     let transpotador = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'rchistoso@gmail.com',
-            pass: 'Rikigamer12'
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
         }
     });
 

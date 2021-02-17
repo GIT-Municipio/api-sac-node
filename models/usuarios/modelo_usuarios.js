@@ -1,14 +1,5 @@
-const Pool = require('pg').Pool
 const utilService = require('../../services/utilService')
-
-//Base de datos de prueba local
-const pool2 = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'bdd_core_municipalidad',
-    password: '1459',
-    port: 5432
-})
+const {pool2} = require('../../config/pg_conecciones')
 
 async function insertNuevoUsuario(cedula, nombres, apellidos, password, email)
 {
@@ -50,10 +41,53 @@ async function ObtenerTransacciones(nombre_app)
     return format;
 }
 
+async function Insertar_CodigoValidador(id_ciudadano, codigo_gen)
+{
+    const query = `INSERT INTO corp.tbl_codigos_login(codlog_id_ciudadano, codlog_codigo_gen, codlog_fecha_hora, codlog_activo) 
+                   VALUES($1, $2, current_timestamp, true)`
+    const respuesta = await pool2.query(query,[id_ciudadano, codigo_gen])
+}
+
+async function ObtenerCodigoVerificador(id_ciudadano, codigo)
+{
+    const query = `SELECT * FROM corp.tbl_codigos_login WHERE codlog_id_ciudadano = $1 AND codlog_codigo_gen = $2 and codlog_fecha_hora::date = current_date`
+    const respuesta = await pool2.query(query,[id_ciudadano, codigo])
+    return respuesta.rows
+}
+
+async function ObtenerCodigoVerificadorTemporizado(id_ciudadano)
+{
+    const query = `SELECT * FROM corp.tbl_codigos_login WHERE codlog_id_ciudadano = $1 AND
+                   codlog_activo = true AND
+                   codlog_fecha_hora::date = current_date AND 
+                   EXTRACT(HOUR from codlog_fecha_hora) - EXTRACT(HOUR from current_timestamp) = 0 AND
+                   EXTRACT(MINUTE from current_timestamp) - EXTRACT(MINUTE from codlog_fecha_hora) <= 2`
+    const respuesta = await pool2.query(query,[id_ciudadano])
+    
+    if (respuesta.rowCount != 0) 
+    {
+        return respuesta.rows[0]
+    }else
+    {
+        return ''
+    }
+}
+
+async function ActualizarEstadoCodigoVerificadorByCiudadano(id_ciudadano)
+{
+    const query = `UPDATE corp.tbl_codigos_login SET codlog_activo = false where codlog_id_ciudadano = $1 AND
+                   codlog_fecha_hora::date = current_date`
+    const respuesta = await pool2.query(query,[id_ciudadano])
+}
+
 module.exports = {
     insertNuevoUsuario,
     actualizar_Estado_Usuario,
     Obtener_Usuario_By_Cedula,
     Obtener_Todos_los_Usuarios,
-    ObtenerTransacciones
+    ObtenerTransacciones,
+    Insertar_CodigoValidador,
+    ObtenerCodigoVerificador,
+    ObtenerCodigoVerificadorTemporizado,
+    ActualizarEstadoCodigoVerificadorByCiudadano
 }

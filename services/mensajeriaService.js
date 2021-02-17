@@ -6,7 +6,7 @@ function Enviar_Emial(emitente, remitente, asunto, cuerpo)
         service: 'gmail',
         auth: {
             user: 'rchistoso@gmail.com',
-            pass: 'rikigamer'
+            pass: 'Rikigamer12'
         }
     });
 

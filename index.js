@@ -6,11 +6,8 @@ const db = require('./queries')
 const inicio = require('./controller/loginController')
 const pagos = require('./controller/pagosController')
 const tramites = require('./controller/tramitesController')
-<<<<<<< Updated upstream
 const biblioteca = require('./controller/bibliotecaController')
-=======
 
->>>>>>> Stashed changes
 var cors = require('cors')
 
 app.use(cors())
@@ -34,12 +31,17 @@ app.post('/pagos/insertPago', pagos.insertRegistro)
 app.post('/pagos/getAllPagosByEstado', pagos.getAllPagosByEstado)
 app.post('/pagos/updatePagos', pagos.updateRegistro)
 app.post('/pagos/saveFile', pagos.saveFile)
+
+//rutas para tramites y requisitos
 app.post('/tramites/getTramitesById', tramites.getTramitesById)
 app.get('/tramites/getTramitesAll', tramites.getTramitesAll)
 app.post('/tramites/getRequisitosByTramiteId', tramites.getRequisitosByTramiteId)
 app.post('/tramites/getRecorridoTramiteByTramite', tramites.getRecorridoTramiteByTramite)
 app.post('/tramites/getTramitesByTramiteId', tramites.getTramitesByTramiteId)
 app.post('/tramites/getDocumentoById', tramites.getDocumentoById)
+app.post('/tramites/getRef_DocumByTramiteId', tramites.getRefDocum_Docum_By_TramiteID)
+
+//rutas para punto de información
 app.get('/punto-informacion/getPuntoInformacionAll', tramites.getPuntoInformacionAll)
 app.post('/tramites/getTramiteByNombre', tramites.getTramiteByNombre)
 

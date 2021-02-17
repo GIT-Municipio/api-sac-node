@@ -1,5 +1,5 @@
 const tramiteTransaccion = require('../models/postgres/sip')
-
+const consumo_gob = require('../services/consumogobService')
 
 async function getTramitesById(req, res) {
     const id = req.body.id
@@ -11,6 +11,7 @@ async function getTramitesById(req, res) {
         res.status(500).send({ mensaje: err.message })
     }
 }
+
 async function getTramitesAll(req, res) {
     try {
         const respuesta = await tramiteTransaccion.getTramitesAll()
@@ -20,14 +21,32 @@ async function getTramitesAll(req, res) {
         res.status(500).send({ mensaje: err.message })
     }
 }
-async function getRequisitosByTramiteId(req, res) {
+async function getRequisitosByTramiteId(req, res) 
+{
     const id = req.body.id
-    try {
-        const respuesta = await tramiteTransaccion.getRequisitosByTramiteId(id)
-        res.status(200).send(respuesta)
-    } catch (err) {
-        console.log(err)
-        res.status(500).send({ mensaje: err.message })
+
+    try 
+    {
+        const respuesta_muni = await tramiteTransaccion.getRequisitosByTramiteId(id)
+        console.log(respuesta_muni)
+        res.status(200).send(respuesta_muni)
+    } catch (error) 
+    {
+        res.status(500).send({mensaje:error.message})
+    }
+}
+
+async function getRefDocum_Docum_By_TramiteID(req, res)
+{
+    const id = req.body.id
+    try 
+    {
+        const tram = await tramiteTransaccion.getRef_documentByTramite(id)
+        console.log(tram.ref_docum)
+        res.status(200).send({codigo_ref:tram.ref_docum})
+    } catch (error) 
+    {
+        res.status(500).send({mensaje:error.message})    
     }
 }
 
@@ -66,24 +85,24 @@ async function getDocumentoById(req, res) {
     }
 }
 
-async function getPuntoInformacionAll(req, res){
+async function getPuntoInformacionAll(req, res) {
     try {
         const respuesta = await tramiteTransaccion.getPuntoInformacionAll()
         res.status(200).send(respuesta)
     } catch (err) {
         console.log(err)
-        res.status(500).send({mensaje: err.message})
+        res.status(500).send({ mensaje: err.message })
     }
 }
 
-async function getTramiteByNombre(req, res){
+async function getTramiteByNombre(req, res) {
     const nombre = req.body.nombre
     try {
         const respuesta = await tramiteTransaccion.getTramiteByNombre(nombre)
         res.status(200).send(respuesta)
     } catch (err) {
         console.log(err)
-        res.status(500).send({ mensaje: err.message})
+        res.status(500).send({ mensaje: err.message })
     }
 }
 
@@ -95,5 +114,6 @@ module.exports = {
     getTramitesByTramiteId,
     getDocumentoById,
     getPuntoInformacionAll,
-    getTramiteByNombre
+    getTramiteByNombre,
+    getRefDocum_Docum_By_TramiteID
 }

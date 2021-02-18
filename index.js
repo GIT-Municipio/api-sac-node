@@ -1,8 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const app = express()
-const port = 3000
+const fileUpload = require('express-fileupload')
+var cors = require('cors')
 const db = require('./queries')
+
 const inicio = require('./controller/loginController')
 const pagos = require('./controller/pagosController')
 const tramites = require('./controller/tramitesController')
@@ -10,7 +11,14 @@ const biblioteca = require('./controller/bibliotecaController')
 
 var cors = require('cors')
 
+const archivos_ciudadano = require('./controller/archivosciudadanosController')
+const compras_publicas = require('./controller/comprasPublicasController')
+
+const app = express()
+const port = 3000
+
 app.use(cors())
+app.use(fileUpload())
 app.use(bodyParser.json())
 app.use(
         bodyParser.urlencoded({
@@ -44,6 +52,20 @@ app.post('/tramites/getRef_DocumByTramiteId', tramites.getRefDocum_Docum_By_Tram
 //rutas para punto de información
 app.get('/punto-informacion/getPuntoInformacionAll', tramites.getPuntoInformacionAll)
 app.post('/tramites/getTramiteByNombre', tramites.getTramiteByNombre)
+
+//RUTAS USUARIOS MUNICIPALIDAD y COMPRAS PUBLICAS
+app.post('/login/loginMunicipio', compras_publicas.Login_Usuario_Municipio)
+
+//RUTAS USUARIOS CIUDADANO
+app.post('/login/nuevoUsuario', inicio.insertNuevoUsuario)
+app.get('/login/cambiarEstado/:cedula', inicio.Activar_Usuario)
+app.get('/login/getTransaccionesCiudadanas', inicio.TranaccionesCiudanos)
+app.post('/login-ciudadano', inicio.login_ciudadano)
+app.post('/login-ciudadano/paso-dos', inicio.login_ciudadano_paso_dos)
+
+//RUTAS CARPETAS Y ARCHIVOS CIUDADANO
+app.get('/getTiposArchivos', archivos_ciudadano.ObtenerTiposArchivos)
+app.post('/archivos-ciudadano/subir-archivo', archivos_ciudadano.subirArchivo)
 
 app.post('/biblioteca/insertRecurso', biblioteca.insertRecurso)
 app.post('/biblioteca/getAllRecursosByEstado', biblioteca.getAllRecursosByEstado)

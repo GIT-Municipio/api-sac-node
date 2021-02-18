@@ -1,5 +1,6 @@
 const utilService = require('../../services/utilService')
 const Pool = require('pg').Pool
+
 const pool = new Pool({
     user: 'postgres', //db user
     host: '172.16.3.35', //db host etc: 127.0.0.1
@@ -7,6 +8,7 @@ const pool = new Pool({
     password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql
 })
+
 const getAllVehicleDisplay = (request, response) => {
     pool.query("SELECT * FROM corp.tbl_aplicaciones_municipalidad ", (error, results) => {
         if (error) {

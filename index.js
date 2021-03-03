@@ -45,6 +45,7 @@ app.post('/tramites/getDocumentoById', tramites.getDocumentoById)
 
 //RUTAS USUARIOS MUNICIPALIDAD y COMPRAS PUBLICAS
 app.post('/login/loginMunicipio', compras_publicas.Login_Usuario_Municipio)
+app.post('/login/loginAdmin', compras_publicas.Login_Usuario_Administrador)
 
 //RUTAS USUARIOS CIUDADANO
 app.post('/login/nuevoUsuario', inicio.insertNuevoUsuario)

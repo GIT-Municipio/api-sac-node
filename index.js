@@ -50,6 +50,8 @@ app.get('/pac/:anio/:cod_dep', compras_publicas.ObtenerPAC)
 app.get('/pacs', compras_publicas.ObtenerPACs)
 app.get('/pacs/departamento/:cod_dep', compras_publicas.ObtenerPACs_por_Departamento)
 app.post('/pac/crearPAC', compras_publicas.CrearPAC)
+app.get('/pac/anios', compras_publicas.OtenerAniosPAC)
+app.post('/det-pac/nuevo', compras_publicas.CrearDetallePAC)
 
 //RUTAS USUARIOS CIUDADANO
 app.post('/login/nuevoUsuario', inicio.insertNuevoUsuario)

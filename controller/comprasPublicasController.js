@@ -159,6 +159,18 @@ async function CrearPAC(req, res)
     }
 }
 
+async function OtenerAniosPAC(req, res)
+{
+    try 
+    {
+        const anios = await compras_publicas.ObtenerAniosPAC()
+        res.status(200).send({anios: anios})   
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})
+    }
+}
+
 ///////////////////Detalles PAC////////////
 
 async function CrearDetallePAC(req, res)
@@ -176,6 +188,15 @@ async function CrearDetallePAC(req, res)
     const tmp_estimado = req.body.tmp_estimado
     const presupuesto = req.body.presupuesto
     const estado = req.body.estado
+
+    try 
+    {
+        await compras_publicas.Crear_Detalle_PAC(anio_p, cod_dep, cod_frm, obj_pnbv, obj_pdot, partida_nombre, proyecto_actividad, obj_general, indicador_gestion, meta_gestion, tmp_estimado, presupuesto, estado)  
+        res.status(200).send({mensaje: 'Detalle PAC Creado Exitosamente'})
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})
+    }
 }
 
 module.exports = {
@@ -184,5 +205,7 @@ module.exports = {
     ObtenerPAC,
     ObtenerPACs,
     ObtenerPACs_por_Departamento,
-    CrearPAC
+    CrearPAC,
+    OtenerAniosPAC,
+    CrearDetallePAC
 }

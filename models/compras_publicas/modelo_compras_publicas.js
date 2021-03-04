@@ -68,7 +68,37 @@ async function CrearPAC(anio, cod_dep, mision)
     }
     
 }
+
+async function ObtenerAniosPAC()
+{
+    try 
+    {
+        const query = `SELECT pac_anio FROM public_compras.tbl_pac GROUP BY pac_anio`  
+        const anios = await pool2.query(query)  
+        return anios.rows
+    } catch (error) 
+    {
+        console.log(error)
+    }
+}
 //---------------------Detalles PACS--------------------
+
+async function Crear_Detalle_PAC(anio_p, cod_dep, cod_frm, obj_pnbv, obj_pdot, partida_nombre, proyecto_actividad, obj_general, indicador_gestion, meta_gestion, tmp_estimado, presupuesto, estado)
+{
+    try 
+    {
+        const query = `INSERT INTO public_compras.tbl_pac_detalle(pacd_anio_p, pacd_cod_dep_p, pacd_frm_cod_p, 
+                       pacd_obj_pnbv, pacd_obj_pdot, pacd_partida_nombre, pacd_proyecto_actividiad, pacd_obj_general, 
+                       pacd_indicador_gestion, pacd_meta_gestion, pacd_tiempo_estimado, pacd_presupuesto, 
+                       pacd_estado, pacd_progra_i, pacd_progra_ii, pacd_progra_iii, pacd_progra_iv)
+                       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,false,false,false,false)`  
+        await pool2.query(query, [anio_p, cod_dep, cod_frm, obj_pnbv, obj_pdot, partida_nombre, proyecto_actividad, obj_general, indicador_gestion, meta_gestion, tmp_estimado, presupuesto, estado])
+    } catch (error) 
+    {
+        console.log(error)
+    }
+}
+
 async function Obtener_Detalles_PAC_Por_Departamento(cod_departamento)
 {
     try 
@@ -103,6 +133,8 @@ module.exports = {
     ObtenerPACsPorDepartamento,
     ObtenerTodosLosPACs,
     CrearPAC,
+    ObtenerAniosPAC,
+    Crear_Detalle_PAC,
     Obtener_Detalles_PAC_Por_Departamento,
     Obtener_Detalles_PAC_Por_Padre_PAC
 }

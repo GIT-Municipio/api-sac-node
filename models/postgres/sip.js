@@ -174,5 +174,7 @@ module.exports = {
     getDocumentoById,
     getPuntoInformacionAll,
     getTramitesByNombre,
-    getRef_documentByTramite
+    getRef_documentByTramite,
+    getDocumentoById, 
+    getPuntoInformacionAll
 }

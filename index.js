@@ -51,7 +51,6 @@ app.post('/tramites/getRef_DocumByTramiteId', tramites.getRefDocum_Docum_By_Tram
 
 //rutas para punto de información
 app.get('/punto-informacion/getPuntoInformacionAll', tramites.getPuntoInformacionAll)
-app.post('/tramites/getTramiteByNombre', tramites.getTramiteByNombre)
 
 //RUTAS USUARIOS MUNICIPALIDAD y COMPRAS PUBLICAS
 app.post('/login/loginMunicipio', compras_publicas.Login_Usuario_Municipio)

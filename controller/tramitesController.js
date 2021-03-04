@@ -21,10 +21,9 @@ async function getTramitesAll(req, res) {
         res.status(500).send({ mensaje: err.message })
     }
 }
-async function getRequisitosByTramiteId(req, res) 
-{
-    const id = req.body.id
 
+async function getRequisitosByTramiteId(req, res) {
+    const id = req.body.id
     try 
     {
         const respuesta_muni = await tramiteTransaccion.getRequisitosByTramiteId(id)
@@ -115,5 +114,6 @@ module.exports = {
     getDocumentoById,
     getPuntoInformacionAll,
     getTramiteByNombre,
-    getRefDocum_Docum_By_TramiteID
+    getRefDocum_Docum_By_TramiteID,
+    getPuntoInformacionAll
 }

@@ -94,8 +94,8 @@ async function Login_Usuario_Administrador(req, res)
 /////////////PACS/////////////
 async function ObtenerPAC(req, res)
 {
-    const anio = req.body.anio
-    const cod_dep = req.body.cod_dep
+    const anio = req.params.anio
+    const cod_dep = req.params.cod_dep
     try 
     {
         const pac = await compras_publicas.ObtenerPAC(anio, cod_dep)
@@ -126,7 +126,7 @@ async function ObtenerPACs(req, res)
 
 async function ObtenerPACs_por_Departamento(req, res)
 {
-    const cod_dep = req.body.cod_dep
+    const cod_dep = req.params.cod_dep
     try 
     {
         const pacs = await compras_publicas.ObtenerPACsPorDepartamento(cod_dep)
@@ -157,6 +157,25 @@ async function CrearPAC(req, res)
     {
         res.status(500).send({mensaje: error.message})
     }
+}
+
+///////////////////Detalles PAC////////////
+
+async function CrearDetallePAC(req, res)
+{
+    const anio_p = req.body.anio_p
+    const cod_dep = req.body.cod_dep
+    const cod_frm = req.body.cod_frm
+    const obj_pnbv = req.body.obj_pnbv
+    const obj_pdot = req.body.obj_pdot
+    const partida_nombre = req.body.partida_nombre
+    const proyecto_actividad = req.body.proyecto_actividad
+    const obj_general = req.body.obj_general
+    const indicador_gestion = req.body.indicador_gestion
+    const meta_gestion = req.body.meta_gestion
+    const tmp_estimado = req.body.tmp_estimado
+    const presupuesto = req.body.presupuesto
+    const estado = req.body.estado
 }
 
 module.exports = {

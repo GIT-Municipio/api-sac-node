@@ -1,6 +1,7 @@
 const usua_municipio = require('../models/compras_publicas/modelo_usuarios_municipalidad')
-const administrador = require('../models/compras_publicas/modelo_compras_publicas')
+const compras_publicas = require('../models/compras_publicas/modelo_compras_publicas')
 
+/////////LOGINS DE USUARIOS Y ADMINISTRADORES///////////////////
 async function Login_Usuario_Municipio(req, res)
 {
     const cedula = req.body.cedula
@@ -59,7 +60,7 @@ async function Login_Usuario_Administrador(req, res)
             {
                 if(usuario.usua_pasw == pasw)
                 {
-                    const admin = await administrador.ObtenerUsuarioAdministrador(cedula)
+                    const admin = await compras_publicas.ObtenerUsuarioAdministrador(cedula)
                     if(admin !== undefined)
                     {
                         if(admin.adm_activo == true)
@@ -90,7 +91,79 @@ async function Login_Usuario_Administrador(req, res)
     }
 }
 
+/////////////PACS/////////////
+async function ObtenerPAC(req, res)
+{
+    const anio = req.body.anio
+    const cod_dep = req.body.cod_dep
+    try 
+    {
+        const pac = await compras_publicas.ObtenerPAC(anio, cod_dep)
+        if(pac !== undefined)
+        {
+            res.status(200).send({pac: pac})
+        }else
+        {
+            res.status(200).send({mensaje: 'No se ha encontrado el pac indicado'})
+        }
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})    
+    }
+}
+
+async function ObtenerPACs(req, res)
+{
+    try 
+    {
+        const pacs = await compras_publicas.ObtenerTodosLosPACs()
+        res.status(200).send({pacs: pacs})
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message}) 
+    }
+}
+
+async function ObtenerPACs_por_Departamento(req, res)
+{
+    const cod_dep = req.body.cod_dep
+    try 
+    {
+        const pacs = await compras_publicas.ObtenerPACsPorDepartamento(cod_dep)
+        if(pacs !== undefined)
+        {
+            res.status(200).send({pacs: pacs})
+        }else
+        {
+            res.status(200).send({mensaje: 'No se encontraron PACs para este deprtamento'})
+        }
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})
+    }
+}
+
+async function CrearPAC(req, res)
+{
+    const anio = req.body.anio
+    const cod_dep = req.body.cod_dep
+    const mision = req.body.mision
+
+    try 
+    {
+        await compras_publicas.CrearPAC(anio, cod_dep, mision)
+        res.status(200).send({mensaje: 'PAC creado exitosamente'})  
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})
+    }
+}
+
 module.exports = {
     Login_Usuario_Municipio,
-    Login_Usuario_Administrador
+    Login_Usuario_Administrador,
+    ObtenerPAC,
+    ObtenerPACs,
+    ObtenerPACs_por_Departamento,
+    CrearPAC
 }

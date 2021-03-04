@@ -56,6 +56,10 @@ app.post('/tramites/getTramiteByNombre', tramites.getTramiteByNombre)
 //RUTAS USUARIOS MUNICIPALIDAD y COMPRAS PUBLICAS
 app.post('/login/loginMunicipio', compras_publicas.Login_Usuario_Municipio)
 app.post('/login/loginAdmin', compras_publicas.Login_Usuario_Administrador)
+app.get('/pac', compras_publicas.ObtenerPAC)
+app.get('/pacs', compras_publicas.ObtenerPACs)
+app.get('/pacs/departamento', compras_publicas.ObtenerPACs_por_Departamento)
+app.post('/pac/crearPAC', compras_publicas.CrearPAC)
 
 //RUTAS USUARIOS CIUDADANO
 app.post('/login/nuevoUsuario', inicio.insertNuevoUsuario)

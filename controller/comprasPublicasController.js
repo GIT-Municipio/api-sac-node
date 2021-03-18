@@ -159,7 +159,7 @@ async function CrearPAC(req, res)
     }
 }
 
-async function OtenerAniosPAC(req, res)
+async function ObtenerAniosPAC(req, res)
 {
     try 
     {
@@ -199,13 +199,50 @@ async function CrearDetallePAC(req, res)
     }
 }
 
+async function ObtenerDetallePAC(req, res)
+{
+    const pacd_id = req.body.pacd_id
+    try 
+    {
+        const detalle = await compras_publicas.Obtener_Dettale_PAC(pacd_id)
+        if(detalle !== undefined)
+        {
+            res.status(200).send({Detalle_PAC: detalle})
+        }else
+        {
+            res.status(200).send({mensaje: 'No se encontro el detalle PAC indicado'})
+        }    
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})    
+    }
+}
+
+async function ObtenerDetallesPACporDepartamento(req, res)
+{
+    const cod_dep = req.body.cod_dep
+    try 
+    {
+        const detalles = await compras_publicas.Obtener_Detalles_PAC_Por_Departamento(cod_dep)
+        res.status(200).send({Detalles_PAC: detalles})    
+    } catch (error) 
+    {
+        res.status(500).send({mensaje: error.message})
+    }
+}
+
 module.exports = {
+    //logins
     Login_Usuario_Municipio,
     Login_Usuario_Administrador,
+    //PAC
     ObtenerPAC,
     ObtenerPACs,
     ObtenerPACs_por_Departamento,
     CrearPAC,
-    OtenerAniosPAC,
-    CrearDetallePAC
+    ObtenerAniosPAC,
+    //Detalles PAC
+    CrearDetallePAC,
+    ObtenerDetallePAC,
+    ObtenerDetallesPACporDepartamento
 }

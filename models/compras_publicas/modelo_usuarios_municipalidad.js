@@ -11,7 +11,6 @@ async function ObtenerUsuarioMunicipalidadByCedula(cedula)
     {
         console.log(error)    
     }
-    
 }
 
 async function ObtenerJefeDepartamentoByIdDepartamento(id_dep)
@@ -26,7 +25,6 @@ async function ObtenerJefeDepartamentoByIdDepartamento(id_dep)
     {
         console.log(error)
     }
-    
 }
 
 module.exports = {

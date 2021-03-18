@@ -66,7 +66,6 @@ async function CrearPAC(anio, cod_dep, mision)
     {
         console.log(error)
     }
-    
 }
 
 async function ObtenerAniosPAC()
@@ -93,6 +92,19 @@ async function Crear_Detalle_PAC(anio_p, cod_dep, cod_frm, obj_pnbv, obj_pdot, p
                        pacd_estado, pacd_progra_i, pacd_progra_ii, pacd_progra_iii, pacd_progra_iv)
                        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,false,false,false,false)`  
         await pool2.query(query, [anio_p, cod_dep, cod_frm, obj_pnbv, obj_pdot, partida_nombre, proyecto_actividad, obj_general, indicador_gestion, meta_gestion, tmp_estimado, presupuesto, estado])
+    } catch (error) 
+    {
+        console.log(error)
+    }
+}
+
+async function Obtener_Dettale_PAC(pacd_id)
+{
+    try 
+    {
+        const query = `SELECT * FROM public_compras.tbl_pac_detalle WHERE pacd_id = $1`
+        const detalle = await pool2.query(query,[pacd_id])
+        return detalle.rows[0]    
     } catch (error) 
     {
         console.log(error)
@@ -127,14 +139,62 @@ async function Obtener_Detalles_PAC_Por_Padre_PAC(anio, cod_departamento)
     }
 }
 
+//---------------------PROCESOS-------------------
+
+/*async function CrearProceso()
+{
+    try 
+    {
+        const query = `INSERT INTO public_compras.tbl_procesos(proc_tmp_cod, proc_org_num, proc_codigo_frm_p, proc_id_est_p, proc_usuario_p, proc_fecha, 
+            proc_obj_contractual, proc_subtotal, proc_iva_cero, proc_iva, proc_valor_total, proc_forma_pago,
+            proc_dias_plazo, proc_garantias, proc_cpc, proc_detalle, proc_dir_carpeta)
+            VALUES()`    
+    } catch (error) 
+    {
+        console.log(error)
+    }
+}*/
+
+async function ObtenerProcesosAprobados()
+{
+    try 
+    {
+        const query = `SELECT * FROM public_compras.tbl_procesos WHERE proc_tmp_cod <> proc_org_num`
+        const procesos = await pool2.query(query)
+        return procesos.rows
+    } catch (error) 
+    {
+        console.log(error)
+    }
+}
+
+async function ObtenerProcesosNoAprobados()
+{
+    try 
+    {
+        const query = `SELECT * FROM public_compras.tbl_procesos WHERE proc_tmp_cod = proc_org_num`
+        const procesos = await pool2.query(query)
+        return procesos.rows    
+    } catch (error) 
+    {
+        console.log(error)
+    }
+}
+
 module.exports = {
     ObtenerUsuarioAdministrador,
+    //PACS
     ObtenerPAC,
     ObtenerPACsPorDepartamento,
     ObtenerTodosLosPACs,
     CrearPAC,
     ObtenerAniosPAC,
+    //Detalles PAC
     Crear_Detalle_PAC,
+    Obtener_Dettale_PAC,
     Obtener_Detalles_PAC_Por_Departamento,
-    Obtener_Detalles_PAC_Por_Padre_PAC
+    Obtener_Detalles_PAC_Por_Padre_PAC,
+    //Procesos
+    ObtenerProcesosAprobados,
+    ObtenerProcesosNoAprobados
 }

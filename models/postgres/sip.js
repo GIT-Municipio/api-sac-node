@@ -1,6 +1,7 @@
 const utilService = require('../../services/utilService')
 const Pool = require('pg').Pool
 const fetch = require('node-fetch')
+const {pool2} = require('../../config/pg_conecciones')
 /*const pool = new Pool({
     user: 'postgres', //db user
     host: '172.16.3.15', //db host etc: 127.0.0.1
@@ -65,7 +66,7 @@ WHERE ((plan.refer_procesoid = proc.id) AND (proc.ref_clasifproceso = clas.id)
 
 async function getRef_documentByTramite(id) {
     const query1 = 'select * from tbli_esq_plantilla where id =$1'
-    const tramite = await pool.query(query1, [id])
+    const tramite = await pool2.query(query1, [id])
     //var codigo = tramite.rows[0].ref_docum
     return tramite.rows[0]
 }

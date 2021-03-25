@@ -13,8 +13,8 @@ const {pool2} = require('../../config/pg_conecciones')
 const pool = new Pool({
     user: 'postgres', //db user
     host: 'localhost', //db host etc: 127.0.0.1
-    database: 'prueba', //db name
-    password: '1234', // password
+    database: 'bdd_sip_sgd', //db name
+    password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql
 })
 

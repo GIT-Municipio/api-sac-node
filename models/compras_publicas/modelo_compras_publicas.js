@@ -141,6 +141,20 @@ async function Obtener_Detalles_PAC_Por_Padre_PAC(anio, cod_departamento)
 
 //---------------------PROCESOS-------------------
 
+async function GenerarNumeroCodigoTemporal()
+{
+    try 
+    {
+        const query = `SELECT COUNT(*) FROM public_compras.tbl_procesos`
+        const numero = pool2.query(query)
+        const codigo = 'temporal-'+numero[0]
+        console.log(codigo)
+    } catch (error) 
+    {
+        console.log(error)    
+    }
+}
+
 /*async function CrearProceso()
 {
     try 

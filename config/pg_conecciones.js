@@ -13,8 +13,8 @@ const pool2 = new Pool({
 const sgd = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'prueba',
-    password: '1234',
+    database: 'bdd_sip_sgd',
+    password: 'postgres',
     port: 5432
 })
 

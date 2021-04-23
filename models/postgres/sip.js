@@ -1,22 +1,22 @@
 const utilService = require('../../services/utilService')
 const Pool = require('pg').Pool
 const fetch = require('node-fetch')
-const {pool2} = require('../../config/pg_conecciones')
-/*const pool = new Pool({
+const {pool2, sgd} = require('../../config/pg_conecciones')
+const pool = new Pool({
     user: 'postgres', //db user
     host: '172.16.3.15', //db host etc: 127.0.0.1
     database: 'bdd_sip_sgd', //db name
     password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql
-})*/
+})
 
-const pool = new Pool({
+/*const pool = new Pool({
     user: 'postgres', //db user
     host: 'localhost', //db host etc: 127.0.0.1
     database: 'bdd_sip_sgd', //db name
     password: 'postgres', // password
     port: 5432 // db port etc: 5432 for postgresql
-})
+})*/
 
 async function getTramitesById(id) {
     const query = `SELECT id, nombre_tramite as detalle  FROM vista_plantillas_xclasifproc_externos WHERE id = $1`
@@ -60,7 +60,7 @@ WHERE ((plan.refer_procesoid = proc.id) AND (proc.ref_clasifproceso = clas.id)
 		 AND (proc.ref_tipoinf = 1))
          AND (proc.ref_departamento = dep.id)
     ORDER BY nombre_tramite*/
-    const tramites = await pool.query(query)
+    const tramites = await sgd.query(query)
     return (tramites.rows)
 }
 

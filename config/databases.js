@@ -44,7 +44,7 @@ const connections_params = {
     dialect: 'mssql'
   },
   bd_general: {
-    server: 'localhost',
+    server: '172.16.3.43',
     database: 'bdd_core_municipalidad',
     user: 'postgres',
     password: 'postgres',
